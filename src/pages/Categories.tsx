@@ -10,6 +10,7 @@ const categories = [
     icon: Scissors,
     description: "Cabeleireiros, manicures, maquiadores e mais",
     count: 45,
+    path: "/categories/beauty"
   },
   {
     id: 2,
@@ -17,6 +18,7 @@ const categories = [
     icon: Wrench,
     description: "Pedreiros, pintores, eletricistas e encanadores",
     count: 32,
+    path: "/categories/construction"
   },
   {
     id: 3,
@@ -24,6 +26,7 @@ const categories = [
     icon: GraduationCap,
     description: "Professores particulares e cursos",
     count: 28,
+    path: "/categories/education"
   },
   {
     id: 4,
@@ -31,6 +34,7 @@ const categories = [
     icon: Laptop,
     description: "Assistência técnica, desenvolvimento e design",
     count: 25,
+    path: "/categories/technology"
   },
   {
     id: 5,
@@ -38,6 +42,7 @@ const categories = [
     icon: Heart,
     description: "Personal trainers, nutricionistas e terapeutas",
     count: 37,
+    path: "/categories/health"
   },
 ];
 
@@ -50,7 +55,7 @@ const Categories = () => {
         {categories.map((category) => {
           const Icon = category.icon;
           return (
-            <Link key={category.id} to={`/categories/${category.id}`}>
+            <Link key={category.id} to={category.path}>
               <Card className="hover:shadow-lg transition-shadow">
                 <CardContent className="p-6">
                   <div className="flex items-start gap-4">
