@@ -7,6 +7,43 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar, Clock, Users, Star, TrendingUp, BarChart3, Settings, Plus } from 'lucide-react';
 
+// Define the missing data for services
+const serviceData = {
+  services: [
+    { name: "Corte Feminino", price: "R$ 50" },
+    { name: "Corte Masculino", price: "R$ 30" },
+    { name: "Hidratação", price: "R$ 40" },
+    { name: "Escova", price: "R$ 35" },
+    { name: "Coloração", price: "R$ 80" }
+  ]
+};
+
+// Define the missing reviews data
+const reviews = [
+  {
+    id: 1,
+    user: {
+      name: "Maria Silva",
+      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&q=75&fit=crop&w=64"
+    },
+    rating: 5,
+    date: "15/03/2023",
+    comment: "Excelente atendimento! Amei o resultado do meu corte e a hidratação deixou meu cabelo super macio.",
+    providerResponse: "Obrigada pela avaliação, Maria! Estamos sempre buscando oferecer o melhor serviço."
+  },
+  {
+    id: 2,
+    user: {
+      name: "João Pereira",
+      avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&q=75&fit=crop&w=64"
+    },
+    rating: 4,
+    date: "02/02/2023",
+    comment: "Muito bom o serviço, só demorou um pouco mais do que o esperado.",
+    providerResponse: "Obrigado pelo feedback, João! Estamos trabalhando para melhorar nosso tempo de atendimento."
+  }
+];
+
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
   
