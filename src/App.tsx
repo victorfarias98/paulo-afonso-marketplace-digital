@@ -8,6 +8,8 @@ import Index from "./pages/Index";
 import ServiceDetails from "./pages/ServiceDetails";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
+import Explore from "./pages/Explore";
+import Categories from "./pages/Categories";
 
 const queryClient = new QueryClient();
 
@@ -21,7 +23,8 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/services/:id" element={<ServiceDetails />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          {/* No momento não estamos implementando as outras páginas para o MVP */}
+          <Route path="/explore" element={<Explore />} />
+          <Route path="/categories" element={<Categories />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
