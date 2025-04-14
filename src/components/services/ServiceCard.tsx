@@ -2,6 +2,7 @@
 import { Link } from 'react-router-dom';
 import { Star, MapPin, Calendar } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 
 export interface ServiceProps {
   id: number;
@@ -34,8 +35,14 @@ const ServiceCard = ({
   className,
   appointmentAvailable = true,
 }: ServiceProps) => {
+  // Extrair as iniciais do nome do provedor para o fallback do avatar
+  const getInitials = (name: string) => {
+    if (!name) return '?';
+    return name.split(' ').map(n => n[0]).join('').toUpperCase();
+  };
+
   return (
-    <Link to={`/services/${id}`} className={cn("service-card flex flex-col", className)}>
+    <Link to={`/services/${id}`} className={cn("service-card flex flex-col shadow-sm hover:shadow-md transition-shadow rounded-lg overflow-hidden border border-gray-100", className)}>
       <div className="relative">
         <img 
           src={image} 
@@ -52,14 +59,20 @@ const ServiceCard = ({
       <div className="p-4 flex flex-col flex-1">
         <h3 className="font-medium text-lg mb-2 line-clamp-2">{title}</h3>
         
-        <div className="flex items-center mb-3">
-          <img 
-            src={provider.avatar} 
-            alt={provider.name} 
-            className="w-6 h-6 rounded-full mr-2"
-          />
-          <span className="text-sm text-muted-foreground">{provider.name}</span>
-        </div>
+        {provider && (
+          <div className="flex items-center mb-3">
+            <Avatar className="w-6 h-6 mr-2">
+              {provider.avatar ? (
+                <AvatarImage 
+                  src={provider.avatar} 
+                  alt={provider.name} 
+                />
+              ) : null}
+              <AvatarFallback>{getInitials(provider.name)}</AvatarFallback>
+            </Avatar>
+            <span className="text-sm text-muted-foreground">{provider.name}</span>
+          </div>
+        )}
         
         <div className="flex items-center mb-2">
           <div className="flex items-center text-yellow-500 mr-2">

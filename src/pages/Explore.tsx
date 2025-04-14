@@ -62,7 +62,18 @@ const Explore = () => {
       <div className="flex flex-wrap gap-6">
         {services.map((service) => (
           <div key={service.id} className="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.33%-16px)]">
-            <ServiceCard service={service} />
+            <ServiceCard 
+              id={service.id}
+              title={service.title}
+              provider={service.provider}
+              category={service.category}
+              rating={service.rating}
+              reviewCount={service.reviewCount}
+              location={service.location}
+              image={service.image}
+              price={service.price}
+              appointmentAvailable={service.appointmentAvailable}
+            />
           </div>
         ))}
       </div>
