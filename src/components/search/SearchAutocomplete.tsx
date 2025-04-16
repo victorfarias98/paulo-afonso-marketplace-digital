@@ -133,7 +133,17 @@ const SearchAutocomplete = ({
                   <span>{service.title}</span>
                   <span className="text-xs text-muted-foreground">{service.category}</span>
                 </div>
-                <span className="text-sm font-medium">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(service.price || 0)}</span>
+                <span className="text-sm font-medium">
+                  {new Intl.NumberFormat('pt-BR', { 
+                    style: 'currency', 
+                    currency: 'BRL' 
+                  }).format(
+                    // Convert the price to a number first
+                    typeof service.price === 'string' 
+                      ? parseFloat(service.price) || 0 
+                      : service.price || 0
+                  )}
+                </span>
               </CommandItem>
             ))}
           </CommandGroup>
