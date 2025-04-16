@@ -5,10 +5,10 @@ import { cn } from '@/lib/utils';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 
 export interface ServiceProps {
-  id: number;
+  id: string | number;
   title: string;
   provider: {
-    id: number;
+    id: string | number;
     name: string;
     avatar: string;
   };

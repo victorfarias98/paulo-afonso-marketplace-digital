@@ -1,7 +1,6 @@
-
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { User, Service, ServiceItem } from "@/types/supabase";
+import { User, Service, ServiceItem, ServiceInsert } from "@/types/supabase";
 import { useToast } from "@/hooks/use-toast";
 
 type AuthContextType = {
@@ -10,8 +9,8 @@ type AuthContextType = {
   login: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string, name: string, businessName: string) => Promise<void>;
   logout: () => Promise<void>;
-  addService: (service: Omit<Service, "id" | "user_id" | "created_at">) => Promise<void>;
-  updateService: (serviceId: string, updatedService: Partial<Omit<Service, "id" | "user_id" | "created_at">>) => Promise<void>;
+  addService: (service: ServiceInsert) => Promise<void>;
+  updateService: (serviceId: string, updatedService: Partial<ServiceInsert>) => Promise<void>;
   removeService: (serviceId: string) => Promise<void>;
 };
 
@@ -23,7 +22,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Check if the user is already logged in
     const checkUser = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
@@ -47,7 +45,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     checkUser();
 
-    // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (event === 'SIGNED_IN' && session) {
@@ -166,7 +163,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const addService = async (service: Omit<Service, "id" | "user_id" | "created_at">) => {
+  const addService = async (service: ServiceInsert) => {
     if (!user) return;
 
     try {
@@ -186,8 +183,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         title: "Serviço cadastrado com sucesso!",
         description: `${service.title} foi adicionado à sua lista de serviços.`,
       });
-
-      return data;
     } catch (error: any) {
       toast({
         title: "Erro ao cadastrar serviço",
@@ -197,7 +192,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const updateService = async (serviceId: string, updatedService: Partial<Omit<Service, "id" | "user_id" | "created_at">>) => {
+  const updateService = async (serviceId: string, updatedService: Partial<ServiceInsert>) => {
     if (!user) return;
 
     try {

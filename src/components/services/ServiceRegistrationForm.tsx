@@ -31,7 +31,7 @@ import {
 import { Save, Plus, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/context/AuthContext";
-import { ServiceItem } from "@/types/supabase";
+import { ServiceItem, ServiceInsert } from "@/types/supabase";
 
 // Form validation schema
 const serviceSchema = z.object({
@@ -80,8 +80,14 @@ const ServiceRegistrationForm = () => {
     setIsSubmitting(true);
     
     try {
+      // Ensure we're passing all required fields for ServiceInsert
       await addService({
-        ...data,
+        title: data.title,
+        description: data.description,
+        category: data.category,
+        location: data.location,
+        price: data.price,
+        image: data.image,
         services: data.services as unknown as any
       });
       

@@ -54,7 +54,7 @@ const Explore = () => {
                     id={service.id}
                     title={service.title}
                     provider={{
-                      id: service.user_id,
+                      id: service.user_id, // This is a string, but our ServiceCard expects a number
                       name: "Profissional", // This would ideally come from a join with profiles
                       avatar: "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?q=80&w=100"
                     }}
