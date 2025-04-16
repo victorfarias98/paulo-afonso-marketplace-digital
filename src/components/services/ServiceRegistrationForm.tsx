@@ -31,6 +31,7 @@ import { Save, Plus, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/context/AuthContext";
 import { ServiceItem, ServiceInsert } from "@/types/supabase";
+import { Json } from "@/integrations/supabase/types";
 
 // Form validation schema
 const serviceSchema = z.object({
