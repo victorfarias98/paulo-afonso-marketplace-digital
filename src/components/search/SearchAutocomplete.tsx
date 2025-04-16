@@ -93,7 +93,7 @@ const SearchAutocomplete = ({
             />
           </div>
           <Button 
-            className="h-12 px-6 bg-paulo-blue hover:bg-paulo-dark text-white" 
+            className="h-12 px-6" 
             onClick={() => setOpen(true)}
           >
             Buscar
@@ -150,7 +150,7 @@ const SearchAutocomplete = ({
           <div className="py-2 px-2 border-t">
             <Button 
               onClick={handleSearch} 
-              className="w-full bg-paulo-blue hover:bg-paulo-dark"
+              className="w-full"
               disabled={!searchQuery.trim()}
             >
               <Search className="mr-2 h-4 w-4" />

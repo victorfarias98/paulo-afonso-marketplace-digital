@@ -6,12 +6,12 @@ import SearchAutocomplete from '@/components/search/SearchAutocomplete';
 
 const Hero = () => {
   return (
-    <section className="bg-gradient-to-r from-paulo-light to-white dark:from-slate-900 dark:to-slate-800 py-12 md:py-20">
+    <section className="gradient-bg py-16 md:py-24">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div className="animate-fade-in">
-            <h1 className="text-4xl md:text-5xl font-bold text-paulo-text dark:text-white mb-4 leading-tight">
-              Encontre serviços de qualidade em <span className="text-paulo-blue dark:text-paulo-green">Paulo Afonso</span>
+            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4 leading-tight">
+              Encontre serviços de qualidade em <span className="text-primary">Paulo Afonso</span>
             </h1>
             <p className="text-lg text-muted-foreground mb-8">
               Conectamos você aos melhores profissionais e empresas da cidade. 
@@ -26,10 +26,10 @@ const Hero = () => {
             
             <div className="flex flex-wrap gap-2 text-sm text-muted-foreground">
               <span>Buscas populares:</span>
-              <Link to="/explore?q=diarista" className="text-paulo-blue hover:underline dark:text-paulo-green">Diarista</Link>
-              <Link to="/explore?q=eletricista" className="text-paulo-blue hover:underline dark:text-paulo-green">Eletricista</Link>
-              <Link to="/explore?q=manicure" className="text-paulo-blue hover:underline dark:text-paulo-green">Manicure</Link>
-              <Link to="/explore?q=professor" className="text-paulo-blue hover:underline dark:text-paulo-green">Professor</Link>
+              <Link to="/explore?q=diarista" className="text-primary hover:underline">Diarista</Link>
+              <Link to="/explore?q=eletricista" className="text-primary hover:underline">Eletricista</Link>
+              <Link to="/explore?q=manicure" className="text-primary hover:underline">Manicure</Link>
+              <Link to="/explore?q=professor" className="text-primary hover:underline">Professor</Link>
             </div>
           </div>
           
