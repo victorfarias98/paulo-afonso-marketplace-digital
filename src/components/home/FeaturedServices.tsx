@@ -1,74 +1,23 @@
 
 import { Link } from 'react-router-dom';
-import ServiceCard, { ServiceProps } from '@/components/services/ServiceCard';
+import ServiceCard from '@/components/services/ServiceCard';
 import { Button } from '@/components/ui/button';
 import { ChevronRight } from 'lucide-react';
-
-// Mock data
-const featuredServices: ServiceProps[] = [
-  {
-    id: 1,
-    title: "Corte e Hidratação Capilar",
-    provider: {
-      id: 101,
-      name: "Salão Beleza Natural",
-      avatar: "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&q=75&fit=crop&w=64"
-    },
-    category: "Beleza",
-    rating: 4.8,
-    reviewCount: 124,
-    location: "Centro, Paulo Afonso",
-    image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&q=75&fit=crop&w=600",
-    price: "A partir de R$ 50"
-  },
-  {
-    id: 2,
-    title: "Serviços de Eletricista Residencial",
-    provider: {
-      id: 102,
-      name: "Carlos Técnico",
-      avatar: "https://images.unsplash.com/photo-1607990281513-2c110a25bd8c?auto=format&q=75&fit=crop&w=64"
-    },
-    category: "Serviços",
-    rating: 4.9,
-    reviewCount: 87,
-    location: "Bairro Tancredo Neves, Paulo Afonso",
-    image: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&q=75&fit=crop&w=600",
-    price: "A partir de R$ 80"
-  },
-  {
-    id: 3,
-    title: "Aulas de Matemática e Física",
-    provider: {
-      id: 103,
-      name: "Prof. Amanda Silva",
-      avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&q=75&fit=crop&w=64"
-    },
-    category: "Educação",
-    rating: 5.0,
-    reviewCount: 56,
-    location: "BTN, Paulo Afonso",
-    image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&q=75&fit=crop&w=600",
-    price: "R$ 60/hora"
-  },
-  {
-    id: 4,
-    title: "Desenvolvimento de Sites e Apps",
-    provider: {
-      id: 104,
-      name: "TechPaulo Solutions",
-      avatar: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&q=75&fit=crop&w=64"
-    },
-    category: "Tecnologia",
-    rating: 4.7,
-    reviewCount: 23,
-    location: "Centro, Paulo Afonso",
-    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&q=75&fit=crop&w=600",
-    price: "Sob consulta"
-  }
-];
+import { useServices } from '@/hooks/useServices';
+import { useState, useEffect } from 'react';
+import { Service } from '@/types/supabase';
 
 const FeaturedServices = () => {
+  const { services, isLoading } = useServices();
+  const [featuredServices, setFeaturedServices] = useState<Service[]>([]);
+  
+  useEffect(() => {
+    if (services && services.length > 0) {
+      // Mostrar apenas os primeiros 4 serviços ou menos se não houver 4
+      setFeaturedServices(services.slice(0, 4));
+    }
+  }, [services]);
+
   return (
     <section className="py-12 bg-paulo-gray">
       <div className="container mx-auto px-4">
@@ -82,11 +31,37 @@ const FeaturedServices = () => {
           </Link>
         </div>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {featuredServices.map((service) => (
-            <ServiceCard key={service.id} {...service} />
-          ))}
-        </div>
+        {isLoading ? (
+          <div className="flex justify-center items-center py-12">
+            <p>Carregando serviços...</p>
+          </div>
+        ) : featuredServices.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {featuredServices.map((service) => (
+              <ServiceCard 
+                key={service.id} 
+                id={service.id}
+                title={service.title}
+                provider={{
+                  id: service.user_id,
+                  name: "Profissional", // Idealmente, isso viria da tabela de perfis
+                  avatar: "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?q=80&w=100"
+                }}
+                category={service.category}
+                rating={4.5} // Isso viria de uma tabela de avaliações
+                reviewCount={10} // Isso viria de uma tabela de avaliações
+                location={service.location}
+                image={service.image || "https://images.unsplash.com/photo-1585747860715-2ba37e788b70?q=80&w=400"}
+                price={service.price}
+                appointmentAvailable={true}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <p>Nenhum serviço disponível no momento.</p>
+          </div>
+        )}
       </div>
     </section>
   );

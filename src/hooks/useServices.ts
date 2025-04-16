@@ -5,7 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Service } from '@/types/supabase';
 import { useAuth } from '@/context/AuthContext';
 
-// Function to fetch all services for the explore page
+// Função para buscar todos os serviços para a página explore
 export const fetchAllServices = async () => {
   const { data, error } = await supabase
     .from('services')
@@ -18,7 +18,7 @@ export const fetchAllServices = async () => {
   return data as Service[];
 };
 
-// Function to fetch services by category
+// Função para buscar serviços por categoria
 export const fetchServicesByCategory = async (category: string) => {
   const { data, error } = await supabase
     .from('services')
@@ -32,7 +32,7 @@ export const fetchServicesByCategory = async (category: string) => {
   return data as Service[];
 };
 
-// Function to fetch a specific service by ID
+// Função para buscar um serviço específico por ID
 export const fetchServiceById = async (id: string) => {
   const { data, error } = await supabase
     .from('services')
@@ -47,7 +47,7 @@ export const fetchServiceById = async (id: string) => {
   return data as Service;
 };
 
-// Hook to fetch user's services
+// Hook para buscar os serviços do usuário
 export const useUserServices = () => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
@@ -88,7 +88,7 @@ export const useUserServices = () => {
   return { services, loading, error };
 };
 
-// Hook using react-query for services data
+// Hook usando react-query para dados de serviços
 export const useServices = () => {
   const { isLoading, data: services, error } = useQuery({
     queryKey: ['services'],
@@ -102,7 +102,7 @@ export const useServices = () => {
   };
 };
 
-// Hook for services by category
+// Hook para serviços por categoria
 export const useServicesByCategory = (category: string) => {
   const { isLoading, data: services, error } = useQuery({
     queryKey: ['services', category],
@@ -116,7 +116,7 @@ export const useServicesByCategory = (category: string) => {
   };
 };
 
-// Hook for a specific service
+// Hook para um serviço específico
 export const useService = (id: string) => {
   const { isLoading, data: service, error } = useQuery({
     queryKey: ['service', id],
