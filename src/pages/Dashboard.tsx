@@ -1,11 +1,12 @@
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar, Clock, Users, Star, TrendingUp, BarChart3, Settings, Plus } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
 
 // Define the missing data for services
 const serviceData = {
@@ -46,6 +47,20 @@ const reviews = [
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
+  const { user, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+  
+  // Check if user is authenticated, if not redirect to login
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login');
+    }
+  }, [isAuthenticated, navigate]);
+  
+  // If not authenticated, don't render the dashboard
+  if (!isAuthenticated || !user) {
+    return null;
+  }
   
   return (
     <div className="flex flex-col min-h-screen">
@@ -59,11 +74,11 @@ const Dashboard = () => {
                 <CardHeader>
                   <div className="flex flex-col items-center">
                     <img 
-                      src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&q=75&fit=crop&w=128"
-                      alt="Salão Beleza Natural"
+                      src={user.avatar || "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&q=75&fit=crop&w=128"}
+                      alt={user.name}
                       className="w-24 h-24 rounded-full mb-3"
                     />
-                    <CardTitle>Salão Beleza Natural</CardTitle>
+                    <CardTitle>{user.name}</CardTitle>
                     <div className="flex items-center mt-1 text-yellow-500">
                       <Star size={14} fill="currentColor" />
                       <Star size={14} fill="currentColor" />
