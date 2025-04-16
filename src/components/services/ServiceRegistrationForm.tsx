@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -80,18 +79,16 @@ const ServiceRegistrationForm = () => {
     setIsSubmitting(true);
     
     try {
-      // Ensure we're passing all required fields for ServiceInsert
       await addService({
         title: data.title,
         description: data.description,
         category: data.category,
         location: data.location,
         price: data.price,
-        image: data.image,
-        services: data.services as unknown as any
+        image: data.image || null,
+        services: data.services as unknown as Json
       });
       
-      // Reset the form after successful submission
       form.reset();
     } catch (error) {
       console.error("Error adding service:", error);
