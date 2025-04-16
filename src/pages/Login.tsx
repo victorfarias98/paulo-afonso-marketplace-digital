@@ -12,6 +12,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "@/hooks/use-toast";
 import { Lock, Mail } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 
 // Create a schema for login validation
 const loginSchema = z.object({
@@ -25,6 +26,7 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { login } = useAuth();
   
   // Initialize form with react-hook-form
   const form = useForm<LoginFormValues>({
@@ -39,19 +41,7 @@ const Login = () => {
     setIsLoading(true);
     
     try {
-      // Mock login - in a real app, this would be an API call
-      console.log("Login data:", data);
-      
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Store user in localStorage to mock persistence
-      localStorage.setItem("user", JSON.stringify({
-        id: "1",
-        name: "Salão Beleza Natural",
-        email: data.email,
-        avatar: "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&q=75&fit=crop&w=128"
-      }));
+      await login(data.email, data.password);
       
       toast({
         title: "Login realizado com sucesso!",
@@ -61,12 +51,8 @@ const Login = () => {
       // Redirect to dashboard
       navigate("/dashboard");
     } catch (error) {
+      // Error is handled in the login function
       console.error("Login error:", error);
-      toast({
-        title: "Erro ao fazer login",
-        description: "Verifique suas credenciais e tente novamente.",
-        variant: "destructive",
-      });
     } finally {
       setIsLoading(false);
     }

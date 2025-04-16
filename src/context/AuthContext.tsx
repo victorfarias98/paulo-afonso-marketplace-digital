@@ -1,33 +1,18 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
-
-type User = {
-  id: string;
-  name: string;
-  email: string;
-  avatar?: string;
-  services?: Service[];
-};
-
-type Service = {
-  id: string;
-  title: string;
-  description: string;
-  category: string;
-  location: string;
-  price: string;
-  image?: string;
-  services: Array<{ name: string; price: string }>;
-};
+import { supabase } from "@/integrations/supabase/client";
+import { User, Service, ServiceItem } from "@/types/supabase";
+import { useToast } from "@/hooks/use-toast";
 
 type AuthContextType = {
   user: User | null;
   isAuthenticated: boolean;
-  login: (user: User) => void;
-  logout: () => void;
-  addService: (service: Omit<Service, "id">) => void;
-  updateService: (serviceId: string, updatedService: Partial<Service>) => void;
-  removeService: (serviceId: string) => void;
+  login: (email: string, password: string) => Promise<void>;
+  signUp: (email: string, password: string, name: string, businessName: string) => Promise<void>;
+  logout: () => Promise<void>;
+  addService: (service: Omit<Service, "id" | "user_id" | "created_at">) => Promise<void>;
+  updateService: (serviceId: string, updatedService: Partial<Omit<Service, "id" | "user_id" | "created_at">>) => Promise<void>;
+  removeService: (serviceId: string) => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -35,85 +20,235 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     // Check if the user is already logged in
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      try {
-        const parsedUser = JSON.parse(storedUser);
-        setUser(parsedUser);
-        setIsAuthenticated(true);
-      } catch (error) {
-        console.error("Error parsing user from localStorage:", error);
-        localStorage.removeItem("user");
+    const checkUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', session.user.id)
+          .single();
+        
+        if (profile) {
+          setUser({
+            id: profile.id,
+            name: profile.name || '',
+            email: profile.email || '',
+            avatar: profile.avatar
+          });
+          setIsAuthenticated(true);
+        }
       }
-    }
-  }, []);
-
-  const login = (userData: User) => {
-    // Initialize services array if not present
-    const userWithServices = {
-      ...userData,
-      services: userData.services || []
-    };
-    
-    setUser(userWithServices);
-    setIsAuthenticated(true);
-    localStorage.setItem("user", JSON.stringify(userWithServices));
-  };
-
-  const logout = () => {
-    setUser(null);
-    setIsAuthenticated(false);
-    localStorage.removeItem("user");
-  };
-
-  const addService = (service: Omit<Service, "id">) => {
-    if (!user) return;
-
-    const newService = {
-      ...service,
-      id: Math.random().toString(36).substr(2, 9)
     };
 
-    const updatedUser = {
-      ...user,
-      services: [...(user.services || []), newService]
-    };
+    checkUser();
 
-    setUser(updatedUser);
-    localStorage.setItem("user", JSON.stringify(updatedUser));
-  };
-
-  const updateService = (serviceId: string, updatedService: Partial<Service>) => {
-    if (!user || !user.services) return;
-
-    const updatedServices = user.services.map(service => 
-      service.id === serviceId ? { ...service, ...updatedService } : service
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (event === 'SIGNED_IN' && session) {
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', session.user.id)
+            .single();
+          
+          if (profile) {
+            setUser({
+              id: profile.id,
+              name: profile.name || '',
+              email: profile.email || '',
+              avatar: profile.avatar
+            });
+            setIsAuthenticated(true);
+          }
+        } else if (event === 'SIGNED_OUT') {
+          setUser(null);
+          setIsAuthenticated(false);
+        }
+      }
     );
 
-    const updatedUser = {
-      ...user,
-      services: updatedServices
+    return () => {
+      subscription.unsubscribe();
     };
+  }, []);
 
-    setUser(updatedUser);
-    localStorage.setItem("user", JSON.stringify(updatedUser));
+  const login = async (email: string, password: string) => {
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      if (data.user) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', data.user.id)
+          .single();
+        
+        if (profile) {
+          setUser({
+            id: profile.id,
+            name: profile.name || '',
+            email: profile.email || '',
+            avatar: profile.avatar
+          });
+          setIsAuthenticated(true);
+        }
+      }
+    } catch (error: any) {
+      toast({
+        title: "Erro ao fazer login",
+        description: error.message || "Verifique suas credenciais e tente novamente.",
+        variant: "destructive",
+      });
+      throw error;
+    }
   };
 
-  const removeService = (serviceId: string) => {
-    if (!user || !user.services) return;
+  const signUp = async (email: string, password: string, name: string, businessName: string) => {
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            name,
+            businessName,
+          },
+        },
+      });
 
-    const updatedServices = user.services.filter(service => service.id !== serviceId);
+      if (error) {
+        throw error;
+      }
 
-    const updatedUser = {
-      ...user,
-      services: updatedServices
-    };
+      if (data.user) {
+        toast({
+          title: "Cadastro realizado com sucesso!",
+          description: "Verifique seu email para confirmar a conta.",
+        });
+      }
+    } catch (error: any) {
+      toast({
+        title: "Erro ao fazer cadastro",
+        description: error.message || "Tente novamente mais tarde.",
+        variant: "destructive",
+      });
+      throw error;
+    }
+  };
 
-    setUser(updatedUser);
-    localStorage.setItem("user", JSON.stringify(updatedUser));
+  const logout = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        throw error;
+      }
+      setUser(null);
+      setIsAuthenticated(false);
+    } catch (error: any) {
+      toast({
+        title: "Erro ao sair",
+        description: error.message || "Tente novamente mais tarde.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const addService = async (service: Omit<Service, "id" | "user_id" | "created_at">) => {
+    if (!user) return;
+
+    try {
+      const { data, error } = await supabase
+        .from('services')
+        .insert({
+          ...service,
+          user_id: user.id,
+        })
+        .select();
+
+      if (error) {
+        throw error;
+      }
+
+      toast({
+        title: "Serviço cadastrado com sucesso!",
+        description: `${service.title} foi adicionado à sua lista de serviços.`,
+      });
+
+      return data;
+    } catch (error: any) {
+      toast({
+        title: "Erro ao cadastrar serviço",
+        description: error.message || "Tente novamente mais tarde.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const updateService = async (serviceId: string, updatedService: Partial<Omit<Service, "id" | "user_id" | "created_at">>) => {
+    if (!user) return;
+
+    try {
+      const { error } = await supabase
+        .from('services')
+        .update(updatedService)
+        .eq('id', serviceId)
+        .eq('user_id', user.id);
+
+      if (error) {
+        throw error;
+      }
+
+      toast({
+        title: "Serviço atualizado com sucesso!",
+        description: "As alterações foram salvas.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Erro ao atualizar serviço",
+        description: error.message || "Tente novamente mais tarde.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const removeService = async (serviceId: string) => {
+    if (!user) return;
+
+    try {
+      const { error } = await supabase
+        .from('services')
+        .delete()
+        .eq('id', serviceId)
+        .eq('user_id', user.id);
+
+      if (error) {
+        throw error;
+      }
+
+      toast({
+        title: "Serviço removido com sucesso!",
+        description: "O serviço foi removido da sua lista.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Erro ao remover serviço",
+        description: error.message || "Tente novamente mais tarde.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -122,6 +257,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         user, 
         isAuthenticated, 
         login, 
+        signUp,
         logout, 
         addService, 
         updateService, 

@@ -12,6 +12,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "@/hooks/use-toast";
 import { Building, Lock, Mail, User } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 
 // Create a schema for registration validation
 const registerSchema = z.object({
@@ -31,6 +32,7 @@ const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { signUp } = useAuth();
   
   // Initialize form with react-hook-form
   const form = useForm<RegisterFormValues>({
@@ -48,34 +50,13 @@ const Register = () => {
     setIsLoading(true);
     
     try {
-      // Mock registration - in a real app, this would be an API call
-      console.log("Registration data:", data);
+      await signUp(data.email, data.password, data.name, data.businessName);
       
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Store user in localStorage to mock persistence
-      localStorage.setItem("user", JSON.stringify({
-        id: "1",
-        name: data.businessName,
-        email: data.email,
-        avatar: "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&q=75&fit=crop&w=128"
-      }));
-      
-      toast({
-        title: "Cadastro realizado com sucesso!",
-        description: "Redirecionando para o dashboard...",
-      });
-      
-      // Redirect to dashboard
-      navigate("/dashboard");
+      // Redirect to login page
+      navigate("/login");
     } catch (error) {
+      // Error is handled in signUp function
       console.error("Registration error:", error);
-      toast({
-        title: "Erro ao fazer cadastro",
-        description: "Tente novamente mais tarde.",
-        variant: "destructive",
-      });
     } finally {
       setIsLoading(false);
     }

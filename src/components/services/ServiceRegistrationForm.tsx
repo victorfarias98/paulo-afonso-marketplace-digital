@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -30,6 +30,8 @@ import {
 } from "@/components/ui/card";
 import { Save, Plus, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/context/AuthContext";
+import { ServiceItem } from "@/types/supabase";
 
 // Form validation schema
 const serviceSchema = z.object({
@@ -56,6 +58,8 @@ const defaultService = {
 
 const ServiceRegistrationForm = () => {
   const { toast } = useToast();
+  const { addService } = useAuth();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   const form = useForm<ServiceFormValues>({
     resolver: zodResolver(serviceSchema),
@@ -72,26 +76,30 @@ const ServiceRegistrationForm = () => {
 
   const services = form.watch("services");
 
-  const onSubmit = (data: ServiceFormValues) => {
-    console.log("Form data:", data);
+  const onSubmit = async (data: ServiceFormValues) => {
+    setIsSubmitting(true);
     
-    // Here you would typically send the data to your backend/API
-    // For now, we'll just show a success message
-    toast({
-      title: "Serviço cadastrado com sucesso!",
-      description: `${data.title} foi adicionado à sua lista de serviços.`,
-    });
-    
-    // Reset the form after successful submission
-    form.reset();
+    try {
+      await addService({
+        ...data,
+        services: data.services as unknown as any
+      });
+      
+      // Reset the form after successful submission
+      form.reset();
+    } catch (error) {
+      console.error("Error adding service:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const addService = () => {
+  const addServiceItem = () => {
     const currentServices = form.getValues("services");
     form.setValue("services", [...currentServices, { ...defaultService }]);
   };
 
-  const removeService = (index: number) => {
+  const removeServiceItem = (index: number) => {
     const currentServices = form.getValues("services");
     if (currentServices.length > 1) {
       form.setValue(
@@ -231,7 +239,7 @@ const ServiceRegistrationForm = () => {
                   type="button" 
                   variant="outline" 
                   size="sm" 
-                  onClick={addService}
+                  onClick={addServiceItem}
                 >
                   <Plus size={16} className="mr-1" />
                   Adicionar Serviço
@@ -277,7 +285,7 @@ const ServiceRegistrationForm = () => {
                     type="button"
                     variant="ghost"
                     size="icon"
-                    onClick={() => removeService(index)}
+                    onClick={() => removeServiceItem(index)}
                     className="mt-1"
                   >
                     <Trash2 size={16} className="text-red-500" />
@@ -291,9 +299,10 @@ const ServiceRegistrationForm = () => {
             <Button 
               type="submit" 
               className="bg-paulo-blue hover:bg-paulo-dark"
+              disabled={isSubmitting}
             >
               <Save size={16} className="mr-2" />
-              Salvar Serviço
+              {isSubmitting ? "Salvando..." : "Salvar Serviço"}
             </Button>
           </CardFooter>
         </form>
