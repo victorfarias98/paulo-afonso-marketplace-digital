@@ -37,6 +37,36 @@
 
     --radius: 0.5rem;
   }
+ 
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+ 
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 98%;
+ 
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+ 
+    --primary: 210 87% 45%;
+    --primary-foreground: 210 40% 98%;
+ 
+    --secondary: 142 70% 55%;
+    --secondary-foreground: 222 47% 11%;
+ 
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+ 
+    --accent: 217 33% 17%;
+    --accent-foreground: 210 40% 98%;
+ 
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+ 
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 212.7 26.8% 83.9%;
+  }
 }
 
 @layer base {
@@ -59,11 +89,11 @@
   }
   
   .service-card {
-    @apply bg-white rounded-lg overflow-hidden border border-border hover-card-effect;
+    @apply bg-background rounded-lg overflow-hidden border border-border hover-card-effect;
   }
   
   .section-title {
-    @apply text-2xl md:text-3xl font-bold text-paulo-dark mb-6 font-heading;
+    @apply text-2xl md:text-3xl font-bold text-paulo-dark dark:text-white mb-6 font-heading;
   }
 
   .page-container {

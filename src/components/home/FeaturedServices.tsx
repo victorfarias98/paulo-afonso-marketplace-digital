@@ -19,7 +19,7 @@ const FeaturedServices = () => {
   }, [services]);
 
   return (
-    <section className="py-12 bg-paulo-gray">
+    <section className="py-12 bg-paulo-gray dark:bg-slate-900">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-8">
           <h2 className="section-title">Serviços em Destaque</h2>
