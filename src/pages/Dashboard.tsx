@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
@@ -5,8 +6,9 @@ import Footer from '@/components/layout/Footer';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Calendar, Clock, Users, Star, TrendingUp, BarChart3, Settings, Plus } from 'lucide-react';
+import { Calendar, Clock, Users, Star, TrendingUp, BarChart3, Settings, Plus, FileText } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
+import ServiceRegistrationForm from '@/components/services/ServiceRegistrationForm';
 
 // Define the missing data for services
 const serviceData = {
@@ -106,6 +108,10 @@ const Dashboard = () => {
                     <BarChart3 size={16} className="mr-2" />
                     Serviços
                   </Button>
+                  <Button variant="ghost" className="w-full justify-start" onClick={() => setActiveTab("register-service")}>
+                    <FileText size={16} className="mr-2" />
+                    Cadastrar Serviço
+                  </Button>
                   <Button variant="ghost" className="w-full justify-start" onClick={() => setActiveTab("reviews")}>
                     <Star size={16} className="mr-2" />
                     Avaliações
@@ -121,10 +127,11 @@ const Dashboard = () => {
             {/* Main content */}
             <div className="md:col-span-3">
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className="grid grid-cols-5 mb-6">
+                <TabsList className="grid grid-cols-6 mb-6">
                   <TabsTrigger value="overview">Visão Geral</TabsTrigger>
                   <TabsTrigger value="calendar">Agenda</TabsTrigger>
                   <TabsTrigger value="services">Serviços</TabsTrigger>
+                  <TabsTrigger value="register-service">Cadastrar</TabsTrigger>
                   <TabsTrigger value="reviews">Avaliações</TabsTrigger>
                   <TabsTrigger value="customers">Clientes</TabsTrigger>
                 </TabsList>
@@ -250,7 +257,10 @@ const Dashboard = () => {
                     <CardHeader className="pb-3">
                       <div className="flex items-center justify-between">
                         <CardTitle>Seus serviços</CardTitle>
-                        <Button className="bg-paulo-blue hover:bg-paulo-dark">
+                        <Button 
+                          className="bg-paulo-blue hover:bg-paulo-dark"
+                          onClick={() => setActiveTab("register-service")}
+                        >
                           <Plus size={16} className="mr-2" />
                           Novo Serviço
                         </Button>
@@ -278,6 +288,11 @@ const Dashboard = () => {
                       </div>
                     </CardContent>
                   </Card>
+                </TabsContent>
+                
+                {/* New Tab: Service Registration */}
+                <TabsContent value="register-service">
+                  <ServiceRegistrationForm />
                 </TabsContent>
                 
                 <TabsContent value="calendar">

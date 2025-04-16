@@ -6,6 +6,18 @@ type User = {
   name: string;
   email: string;
   avatar?: string;
+  services?: Service[];
+};
+
+type Service = {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  location: string;
+  price: string;
+  image?: string;
+  services: Array<{ name: string; price: string }>;
 };
 
 type AuthContextType = {
@@ -13,6 +25,9 @@ type AuthContextType = {
   isAuthenticated: boolean;
   login: (user: User) => void;
   logout: () => void;
+  addService: (service: Omit<Service, "id">) => void;
+  updateService: (serviceId: string, updatedService: Partial<Service>) => void;
+  removeService: (serviceId: string) => void;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -37,9 +52,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = (userData: User) => {
-    setUser(userData);
+    // Initialize services array if not present
+    const userWithServices = {
+      ...userData,
+      services: userData.services || []
+    };
+    
+    setUser(userWithServices);
     setIsAuthenticated(true);
-    localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem("user", JSON.stringify(userWithServices));
   };
 
   const logout = () => {
@@ -48,8 +69,65 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.removeItem("user");
   };
 
+  const addService = (service: Omit<Service, "id">) => {
+    if (!user) return;
+
+    const newService = {
+      ...service,
+      id: Math.random().toString(36).substr(2, 9)
+    };
+
+    const updatedUser = {
+      ...user,
+      services: [...(user.services || []), newService]
+    };
+
+    setUser(updatedUser);
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+  };
+
+  const updateService = (serviceId: string, updatedService: Partial<Service>) => {
+    if (!user || !user.services) return;
+
+    const updatedServices = user.services.map(service => 
+      service.id === serviceId ? { ...service, ...updatedService } : service
+    );
+
+    const updatedUser = {
+      ...user,
+      services: updatedServices
+    };
+
+    setUser(updatedUser);
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+  };
+
+  const removeService = (serviceId: string) => {
+    if (!user || !user.services) return;
+
+    const updatedServices = user.services.filter(service => service.id !== serviceId);
+
+    const updatedUser = {
+      ...user,
+      services: updatedServices
+    };
+
+    setUser(updatedUser);
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+  };
+
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, login, logout }}>
+    <AuthContext.Provider 
+      value={{ 
+        user, 
+        isAuthenticated, 
+        login, 
+        logout, 
+        addService, 
+        updateService, 
+        removeService 
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
