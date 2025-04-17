@@ -112,7 +112,7 @@ const SearchAutocomplete = ({
         </div>
       )}
 
-      <CommandDialog open={open} onOpenChange={setOpen} className="bg-card border-border">
+      <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput 
           placeholder="Busque por serviços ou profissionais..." 
           value={searchQuery}
