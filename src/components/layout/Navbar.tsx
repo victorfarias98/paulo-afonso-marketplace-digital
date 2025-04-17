@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, User, LogOut } from 'lucide-react';
+import { Menu, X, User, LogOut, Briefcase, Search, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -33,7 +33,7 @@ const Navbar = () => {
           <div className="flex items-center">
             <Link to="/" className="flex items-center">
               <span className="text-2xl font-bold font-heading">
-                <span className="text-primary">Service</span><span className="text-[#10B981]">Connect</span>
+                <span className="text-primary">Serva</span><span className="text-[#10B981]">lize</span>
               </span>
             </Link>
           </div>
@@ -45,10 +45,12 @@ const Navbar = () => {
           <nav className="hidden md:flex items-center space-x-2">
             <ThemeToggle />
 
-            <Link to="/explore" className="text-sm font-medium hover:text-primary px-3 py-2 transition-colors">
+            <Link to="/explore" className="text-sm font-medium hover:text-primary px-3 py-2 transition-colors flex items-center">
+              <Search className="mr-1 h-4 w-4" />
               Explorar
             </Link>
-            <Link to="/categories" className="text-sm font-medium hover:text-primary px-3 py-2 transition-colors">
+            <Link to="/categories" className="text-sm font-medium hover:text-primary px-3 py-2 transition-colors flex items-center">
+              <Briefcase className="mr-1 h-4 w-4" />
               Categorias
             </Link>
             
@@ -87,8 +89,9 @@ const Navbar = () => {
                   </Button>
                 </Link>
                 <Link to="/register">
-                  <Button size="sm">
-                    Cadastrar Serviço
+                  <Button size="sm" className="gap-2">
+                    <MapPin size={16} />
+                    <span>Cadastrar Serviço</span>
                   </Button>
                 </Link>
               </>
@@ -114,10 +117,12 @@ const Navbar = () => {
             <SearchAutocomplete placeholder="Buscar serviços, profissionais..." />
           </div>
           <nav className="flex flex-col space-y-4">
-            <Link to="/explore" className="text-sm font-medium hover:text-primary py-2 transition-colors">
+            <Link to="/explore" className="text-sm font-medium hover:text-primary py-2 transition-colors flex items-center">
+              <Search className="mr-2 h-4 w-4" />
               Explorar
             </Link>
-            <Link to="/categories" className="text-sm font-medium hover:text-primary py-2 transition-colors">
+            <Link to="/categories" className="text-sm font-medium hover:text-primary py-2 transition-colors flex items-center">
+              <Briefcase className="mr-2 h-4 w-4" />
               Categorias
             </Link>
             
@@ -157,8 +162,9 @@ const Navbar = () => {
                   </Button>
                 </Link>
                 <Link to="/register" className="py-2">
-                  <Button size="sm" className="w-full">
-                    Cadastrar Serviço
+                  <Button size="sm" className="w-full gap-2">
+                    <MapPin size={16} />
+                    <span>Cadastrar Serviço</span>
                   </Button>
                 </Link>
               </>

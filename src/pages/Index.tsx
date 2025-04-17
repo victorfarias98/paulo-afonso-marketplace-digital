@@ -19,7 +19,7 @@ const Index = () => {
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="section-title">Impulsionando a Economia Local</h2>
               <p className="text-lg text-muted-foreground mb-8">
-                O ServiceConnect é uma iniciativa para fortalecer o comércio e os serviços locais, 
+                O Servalize é uma iniciativa para fortalecer o comércio e os serviços locais, 
                 conectando profissionais autônomos e pequenas empresas aos moradores da cidade.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">

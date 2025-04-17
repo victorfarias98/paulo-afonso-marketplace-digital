@@ -25,17 +25,17 @@ const Hero = () => {
             
             <div className="flex flex-wrap gap-2 text-sm text-muted-foreground">
               <span>Buscas populares:</span>
-              <Link to="/explore?q=diarista" className="text-primary hover:underline">Diarista</Link>
+              <Link to="/explore?q=pedreiro" className="text-primary hover:underline">Pedreiro</Link>
               <Link to="/explore?q=eletricista" className="text-primary hover:underline">Eletricista</Link>
-              <Link to="/explore?q=manicure" className="text-primary hover:underline">Manicure</Link>
-              <Link to="/explore?q=professor" className="text-primary hover:underline">Professor</Link>
+              <Link to="/explore?q=cabeleireiro" className="text-primary hover:underline">Cabeleireiro</Link>
+              <Link to="/explore?q=encanador" className="text-primary hover:underline">Encanador</Link>
             </div>
           </div>
           
           <div className="hidden md:block">
             <img 
-              src="https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600" 
-              alt="Profissionais Paulo Afonso" 
+              src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?ixlib=rb-4.0.3&auto=format&fit=crop&w=700&q=80" 
+              alt="Profissionais de serviços" 
               className="w-full h-auto rounded-lg shadow-lg border border-border/50"
             />
           </div>
