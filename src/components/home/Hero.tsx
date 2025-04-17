@@ -1,6 +1,5 @@
 
 import { Link } from 'react-router-dom';
-import { ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import SearchAutocomplete from '@/components/search/SearchAutocomplete';
 
@@ -37,7 +36,7 @@ const Hero = () => {
             <img 
               src="https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600" 
               alt="Profissionais Paulo Afonso" 
-              className="w-full h-auto rounded-lg shadow-lg"
+              className="w-full h-auto rounded-lg shadow-lg border border-border/50"
             />
           </div>
         </div>

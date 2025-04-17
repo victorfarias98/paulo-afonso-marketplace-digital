@@ -72,11 +72,11 @@ const SearchAutocomplete = ({
           <Input
             type="search"
             placeholder={placeholder}
-            className="w-full pl-10"
+            className="w-full pl-10 border-border bg-card/50"
             onClick={() => setOpen(true)}
             readOnly
           />
-          <kbd className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 hidden md:inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-xs font-medium opacity-100">
+          <kbd className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 hidden md:inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-xs font-medium opacity-70">
             <span className="text-xs">⌘</span>K
           </kbd>
         </div>
@@ -87,7 +87,7 @@ const SearchAutocomplete = ({
             <Input 
               type="search" 
               placeholder={placeholder} 
-              className="w-full pl-10 h-12 text-base"
+              className="w-full pl-10 h-12 text-base border-border bg-card/50"
               onClick={() => setOpen(true)}
               readOnly
             />
@@ -105,21 +105,22 @@ const SearchAutocomplete = ({
           <Input
             type="search"
             placeholder={placeholder}
-            className="w-full pl-10"
+            className="w-full pl-10 border-border bg-card/50"
             onClick={() => setOpen(true)}
             readOnly
           />
         </div>
       )}
 
-      <CommandDialog open={open} onOpenChange={setOpen}>
+      <CommandDialog open={open} onOpenChange={setOpen} className="bg-card border-border">
         <CommandInput 
           placeholder="Busque por serviços ou profissionais..." 
           value={searchQuery}
           onValueChange={setSearchQuery}
+          className="border-b border-border"
         />
-        <CommandList>
-          <CommandEmpty>
+        <CommandList className="bg-card">
+          <CommandEmpty className="py-6 text-muted-foreground">
             {isLoading ? 'Carregando...' : 'Nenhum resultado encontrado.'}
           </CommandEmpty>
           <CommandGroup heading="Serviços">
@@ -127,13 +128,13 @@ const SearchAutocomplete = ({
               <CommandItem
                 key={service.id}
                 onSelect={() => handleSelect(service.id)}
-                className="flex justify-between"
+                className="flex justify-between hover:bg-secondary/30"
               >
                 <div className="flex flex-col">
                   <span>{service.title}</span>
                   <span className="text-xs text-muted-foreground">{service.category}</span>
                 </div>
-                <span className="text-sm font-medium">
+                <span className="text-sm font-medium text-primary">
                   {new Intl.NumberFormat('pt-BR', { 
                     style: 'currency', 
                     currency: 'BRL' 
@@ -147,7 +148,7 @@ const SearchAutocomplete = ({
               </CommandItem>
             ))}
           </CommandGroup>
-          <div className="py-2 px-2 border-t">
+          <div className="py-2 px-2 border-t border-border">
             <Button 
               onClick={handleSearch} 
               className="w-full"

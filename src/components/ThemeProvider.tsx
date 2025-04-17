@@ -18,7 +18,7 @@ const ThemeProviderContext = createContext<ThemeProviderState | undefined>(undef
 
 export function ThemeProvider({
   children,
-  defaultTheme = "system",
+  defaultTheme = "dark", // Definindo dark como padrão
   storageKey = "site-theme",
   ...props
 }: ThemeProviderProps) {

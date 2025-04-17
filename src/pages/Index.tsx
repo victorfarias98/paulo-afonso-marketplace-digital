@@ -7,14 +7,14 @@ import FeaturedServices from '@/components/home/FeaturedServices';
 
 const Index = () => {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-background">
       <Navbar />
       <main className="flex-grow">
         <Hero />
         <CategorySection />
         <FeaturedServices />
         
-        <section className="py-16">
+        <section className="py-16 bg-card/50">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="section-title">Impulsionando a Economia Local</h2>

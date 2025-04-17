@@ -27,13 +27,13 @@ const Navbar = () => {
   };
   
   return (
-    <header className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-sm border-b border-border">
+    <header className="sticky top-0 z-50 w-full bg-background/90 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">
             <Link to="/" className="flex items-center">
-              <span className="text-2xl font-bold text-primary font-heading">
-                Service<span className="text-secondary">Connect</span>
+              <span className="text-2xl font-bold font-heading">
+                <span className="text-primary">Service</span><span className="text-[#10B981]">Connect</span>
               </span>
             </Link>
           </div>
@@ -45,10 +45,10 @@ const Navbar = () => {
           <nav className="hidden md:flex items-center space-x-2">
             <ThemeToggle />
 
-            <Link to="/explore" className="text-sm font-medium hover:text-primary px-3 py-2">
+            <Link to="/explore" className="text-sm font-medium hover:text-primary px-3 py-2 transition-colors">
               Explorar
             </Link>
-            <Link to="/categories" className="text-sm font-medium hover:text-primary px-3 py-2">
+            <Link to="/categories" className="text-sm font-medium hover:text-primary px-3 py-2 transition-colors">
               Categorias
             </Link>
             
@@ -62,16 +62,16 @@ const Navbar = () => {
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
+                <DropdownMenuContent align="end" className="bg-card border-border">
                   <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
                   <DropdownMenuLabel className="text-xs text-muted-foreground">
                     {user.email}
                   </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
+                  <DropdownMenuSeparator className="bg-border" />
                   <DropdownMenuItem asChild>
                     <Link to="/dashboard">Dashboard</Link>
                   </DropdownMenuItem>
-                  <DropdownMenuSeparator />
+                  <DropdownMenuSeparator className="bg-border" />
                   <DropdownMenuItem onClick={handleLogout} className="text-destructive">
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Sair</span>
@@ -81,7 +81,7 @@ const Navbar = () => {
             ) : (
               <>
                 <Link to="/login">
-                  <Button variant="outline" size="sm" className="gap-2">
+                  <Button variant="outline" size="sm" className="gap-2 border-border">
                     <User size={16} />
                     <span>Entrar</span>
                   </Button>
@@ -109,15 +109,15 @@ const Navbar = () => {
       
       {/* Mobile menu */}
       {isMenuOpen && (
-        <div className="md:hidden py-4 px-4 bg-background border-t">
+        <div className="md:hidden py-4 px-4 bg-card border-t border-border">
           <div className="mb-4">
             <SearchAutocomplete placeholder="Buscar serviços, profissionais..." />
           </div>
           <nav className="flex flex-col space-y-4">
-            <Link to="/explore" className="text-sm font-medium hover:text-primary py-2">
+            <Link to="/explore" className="text-sm font-medium hover:text-primary py-2 transition-colors">
               Explorar
             </Link>
-            <Link to="/categories" className="text-sm font-medium hover:text-primary py-2">
+            <Link to="/categories" className="text-sm font-medium hover:text-primary py-2 transition-colors">
               Categorias
             </Link>
             
@@ -134,14 +134,14 @@ const Navbar = () => {
                   </div>
                 </div>
                 <Link to="/dashboard" className="py-2">
-                  <Button variant="outline" size="sm" className="w-full">
+                  <Button variant="outline" size="sm" className="w-full border-border">
                     Dashboard
                   </Button>
                 </Link>
                 <Button 
                   variant="outline" 
                   size="sm" 
-                  className="w-full text-destructive" 
+                  className="w-full text-destructive border-border" 
                   onClick={handleLogout}
                 >
                   <LogOut className="mr-2 h-4 w-4" />
@@ -151,7 +151,7 @@ const Navbar = () => {
             ) : (
               <>
                 <Link to="/login" className="py-2">
-                  <Button variant="outline" size="sm" className="w-full gap-2">
+                  <Button variant="outline" size="sm" className="w-full gap-2 border-border">
                     <User size={16} />
                     <span>Entrar</span>
                   </Button>

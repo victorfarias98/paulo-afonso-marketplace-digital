@@ -42,7 +42,7 @@ const ServiceCard = ({
   };
 
   return (
-    <Link to={`/services/${id}`} className={cn("service-card flex flex-col shadow-sm hover:shadow-md transition-shadow rounded-lg overflow-hidden border border-gray-100", className)}>
+    <Link to={`/services/${id}`} className={cn("bg-card flex flex-col shadow-sm hover:shadow-md transition-shadow rounded-lg overflow-hidden border border-border", className)}>
       <div className="relative">
         <img 
           src={image} 
@@ -50,14 +50,14 @@ const ServiceCard = ({
           className="w-full h-48 object-cover"
         />
         <div className="absolute top-2 left-2">
-          <span className="bg-white px-2 py-1 rounded-full text-xs font-medium">
+          <span className="bg-background/80 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium text-foreground border border-border/50">
             {category}
           </span>
         </div>
       </div>
       
       <div className="p-4 flex flex-col flex-1">
-        <h3 className="font-medium text-lg mb-2 line-clamp-2">{title}</h3>
+        <h3 className="font-medium text-lg mb-2 line-clamp-2 text-foreground">{title}</h3>
         
         {provider && (
           <div className="flex items-center mb-3">
@@ -89,13 +89,13 @@ const ServiceCard = ({
         
         <div className="mt-auto flex items-center justify-between">
           {price && (
-            <div className="text-paulo-blue font-semibold">
+            <div className="text-primary font-semibold">
               {price}
             </div>
           )}
           
           {appointmentAvailable && (
-            <div className="flex items-center text-xs text-green-600">
+            <div className="flex items-center text-xs text-[#10B981]">
               <Calendar size={14} className="mr-1" />
               <span>Agendamento disponível</span>
             </div>

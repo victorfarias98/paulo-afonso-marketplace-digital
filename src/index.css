@@ -7,6 +7,38 @@
 
 @layer base {
   :root {
+    --background: 0 0% 7%;        /* #121212 */
+    --foreground: 0 0% 100%;      /* #FFFFFF */
+    
+    --card: 0 0% 12%;             /* #1E1E1E */
+    --card-foreground: 0 0% 100%; /* #FFFFFF */
+    
+    --popover: 0 0% 12%;          /* #1E1E1E */
+    --popover-foreground: 0 0% 100%; /* #FFFFFF */
+    
+    --primary: 246 80% 59%;       /* #4F46E5 */
+    --primary-foreground: 0 0% 100%; /* #FFFFFF */
+    
+    --secondary: 240 7% 23%;      /* #3A3A3A */
+    --secondary-foreground: 0 0% 100%; /* #FFFFFF */
+    
+    --muted: 240 7% 23%;          /* #3A3A3A */
+    --muted-foreground: 0 0% 69%; /* #B0B0B0 */
+    
+    --accent: 240 7% 23%;         /* #3A3A3A */
+    --accent-foreground: 0 0% 100%; /* #FFFFFF */
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 0 0% 16.5%;         /* #2A2A2A */
+    --input: 0 0% 16.5%;          /* #2A2A2A */
+    --ring: 246 80% 59%;          /* #4F46E5 */
+    
+    --radius: 0.75rem;
+  }
+
+  .light {
     --background: 220 33% 98%;
     --foreground: 222 47% 11%;
 
@@ -34,38 +66,6 @@
     --border: 220 20% 90%;
     --input: 220 20% 90%;
     --ring: 221 83% 53%;
-
-    --radius: 0.75rem;
-  }
- 
-  .dark {
-    --background: 222 47% 10%;
-    --foreground: 213 31% 91%;
- 
-    --card: 222 47% 11%;
-    --card-foreground: 213 31% 91%;
- 
-    --popover: 222 47% 11%;
-    --popover-foreground: 213 31% 91%;
- 
-    --primary: 221 83% 53%;
-    --primary-foreground: 210 40% 98%;
- 
-    --secondary: 142 76% 45%;
-    --secondary-foreground: 222 47% 11%;
- 
-    --muted: 223 30% 17%;
-    --muted-foreground: 214 20% 65%;
- 
-    --accent: 223 30% 17%;
-    --accent-foreground: 213 31% 91%;
- 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
- 
-    --border: 223 30% 17%;
-    --input: 223 30% 17%;
-    --ring: 221 83% 53%;
   }
 }
 
@@ -89,7 +89,7 @@
   }
   
   .service-card {
-    @apply bg-background rounded-lg overflow-hidden border border-border hover-card-effect;
+    @apply bg-card rounded-lg overflow-hidden border border-border hover-card-effect;
   }
   
   .section-title {
@@ -101,10 +101,14 @@
   }
 
   .gradient-bg {
-    @apply bg-gradient-to-r from-primary/10 to-secondary/10;
+    @apply bg-gradient-to-r from-primary/10 to-secondary/30;
   }
   
   .card-gradient {
     @apply bg-gradient-to-br from-card to-background border border-border;
+  }
+  
+  .glass-effect {
+    @apply backdrop-blur-md bg-background/80 border border-border/50;
   }
 }

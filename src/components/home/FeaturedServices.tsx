@@ -19,12 +19,12 @@ const FeaturedServices = () => {
   }, [services]);
 
   return (
-    <section className="py-16 bg-accent/50 dark:bg-accent/20">
+    <section className="py-16 bg-background">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-8">
           <h2 className="section-title">Serviços em Destaque</h2>
           <Link to="/explore">
-            <Button variant="outline" className="flex items-center gap-2">
+            <Button variant="outline" className="flex items-center gap-2 border-border">
               <span>Ver Todos</span>
               <ChevronRight size={16} />
             </Button>
@@ -33,7 +33,7 @@ const FeaturedServices = () => {
         
         {isLoading ? (
           <div className="flex justify-center items-center py-12">
-            <p>Carregando serviços...</p>
+            <p className="text-muted-foreground">Carregando serviços...</p>
           </div>
         ) : featuredServices.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -59,7 +59,7 @@ const FeaturedServices = () => {
           </div>
         ) : (
           <div className="text-center py-12">
-            <p>Nenhum serviço disponível no momento.</p>
+            <p className="text-muted-foreground">Nenhum serviço disponível no momento.</p>
           </div>
         )}
       </div>
