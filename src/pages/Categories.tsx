@@ -56,16 +56,16 @@ const Categories = () => {
           const Icon = category.icon;
           return (
             <Link key={category.id} to={category.path}>
-              <Card className="hover:shadow-lg transition-shadow">
+              <Card className="hover:shadow-lg hover:shadow-primary/10 transition-shadow border-border bg-card">
                 <CardContent className="p-6">
                   <div className="flex items-start gap-4">
-                    <div className="p-3 bg-paulo-blue/10 rounded-lg">
-                      <Icon className="h-6 w-6 text-paulo-blue" />
+                    <div className="p-3 bg-primary/10 rounded-lg">
+                      <Icon className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-semibold mb-1">{category.name}</h3>
+                      <h3 className="font-semibold mb-1 text-foreground">{category.name}</h3>
                       <p className="text-sm text-muted-foreground mb-2">{category.description}</p>
-                      <span className="text-sm text-paulo-blue">{category.count} profissionais</span>
+                      <span className="text-sm text-primary">{category.count} profissionais</span>
                     </div>
                   </div>
                 </CardContent>
